@@ -9,7 +9,7 @@ An e-commerce app with bidding system. You can create accounts, auctions, bids a
 
 # Running Locally
 
-In your chosen folder, type "Git clone 'https://github.com/riquiofficial/auctions.git'".
+In your chosen folder, type "Git clone 'https://github.com/riquiofficial/auctions.git'" in your command prompt.
 
-- In command prompt type python manage.py runserver.
+- Type python manage.py runserver.
 - Open localhost:8000 in your browser
