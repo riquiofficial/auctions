@@ -1,0 +1,56 @@
+{% extends "auctions/layout.html" %} {%block title%}Watchlist{%endblock%}
+<div></div>
+{%block body%}{% if messages %} {%for message in messages%}
+<div class="alert {{message.tags}}">{{message}}</div>
+{%endfor%} {% endif %}
+<div class="jumbotron jumbotron-fluid" style="background-color: #e5c3c3">
+  <div class="container">
+    <h2 class="display-4">My Watchlist</h2>
+    <div class="row">
+      {%if watchlist%} {% for auction in watchlist %}
+      <div class="col-md-6 col-sm-12">
+        <div class="card mb-3" style="color: rgb(61, 61, 61)">
+          <div class="row no-gutters">
+            <div class="col-6">
+              <img
+                class="card-img-top"
+                src="{{auction.photo}}"
+                alt="{{auction.item_name}}"
+              />
+            </div>
+            <div class="col-6">
+              <div class="card-body">
+                <h5 class="card-title">{{auction.item_name}}</h5>
+
+                <!-- loop through generated max-bids dictionary and match it with the right auction -->
+                {%for key, value in prices.items%} {%if key == auction.id %}
+                <p class="card-text">
+                  <strong class="font-weight-bold"
+                    >Current Bid Price: £{{value}}</strong
+                  >
+                </p>
+                <a
+                  class="btn btn-danger btn-lg"
+                  href="{% url 'auction' auction.id%}"
+                  role="button"
+                >
+                  Bid Now!
+                </a>
+                <a
+                  class="btn btn-warning mt-2"
+                  href="{% url 'watchlist_delete' auction.id 'delete' %}"
+                >
+                  Remove from Watchlist
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {%endif%} {%endfor%} {%endfor %} {%else%}
+      <h4 class="ml-4">Nothing in Watchlist...</h4>
+      {%endif%}
+    </div>
+  </div>
+</div>
+{% endblock %}

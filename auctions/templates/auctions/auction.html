@@ -1,0 +1,87 @@
+{% extends "auctions/layout.html" %}{%block title%}Auction -
+{{auction.item_name}} {%endblock%}
+<div></div>
+{% block body %} {%for message in messages%}
+<div class="alert {{message.tags}}">{{ message }}</div>
+{%endfor%}
+<div class="jumbotron jumbotron-fluid" style="background-color: #e5c3c3">
+  <div class="container">
+    <h1 class="display-4 mb-4">{{auction.item_name}}</h1>
+    <img
+      width="100%"
+      src="{{auction.photo}}"
+      alt="picture of {{auction.item_name}}"
+    />
+    <hr class="my-4" />
+    <p class="lead">Description: {{auction.description}}</p>
+    <p><i>Start Price: £{{auction.start_price}}</i></p>
+    {%if max_bid.highest_bid > 0 %}
+    <p>
+      Highest Bid: <strong>£{{max_bid.highest_bid}} </strong
+      ><span class="text-muted">by {{max_bid.username}}</span>
+    </p>
+    {%else%}
+    <p><small>No Bids Yet...</small></p>
+    {%endif%}
+
+    <p>
+      <small
+        >Date Listed: {{auction.start_date}} by
+        {{auction.seller.username}}</small
+      >
+    </p>
+    <p class="text-muted"><small>Until: {{auction.end_date}}</small></p>
+    {%if auction.active %} {% if user.is_authenticated %}
+
+    <form method="POST">
+      {% csrf_token %} {{form}}
+      <input class="btn btn-danger btn-lg" type="submit" value="Bid" />
+    </form>
+    <div class="mt-5 text-right">
+      {%if auction.id != watchlist.id %}
+      <a href="{% url 'watchlist_add' auction.id %}">
+        <button class="btn btn-outline-primary btn-m">Add to Watchlist</button>
+      </a>
+      {%else%}
+      <a
+        class="btn btn-warning"
+        href="{% url 'watchlist_delete' auction.id 'delete' %}"
+      >
+        Remove from Watchlist
+      </a>
+      {%endif%} {% if auction.seller.username == request.user.username %}
+      <a
+        class="btn btn-success"
+        href="{% url 'auction_close' auction.id 'close' %}"
+        >Close Auction</a
+      >
+      {%endif%}
+    </div>
+    {% else %}
+    <div>Sign in or Register to bid.</div>
+    {% endif %} {%else%}
+    <h2>Auction Closed. {{max_bid.username|default:"Nobody"}} Won!</h2>
+    {%endif%}
+  </div>
+</div>
+
+<div class="container">
+  <div class="jumbotron">
+    <h3>Comments:</h3>
+    <hr class="my-4" />
+    {%for comment in comments%}
+    <p><strong>{{comment.author}}:</strong> {{comment.comment}}</p>
+    <hr />
+    {%endfor%}
+    <form></form>
+    {% if user.is_authenticated %}
+    <form method="POST">
+      {% csrf_token %} {{ comment_form }}
+      <input class="btn btn-primary btn-sm ml-2" type="submit" value="Post" />
+    </form>
+    {% else %}
+    <div>Sign in or Register to Comment.</div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

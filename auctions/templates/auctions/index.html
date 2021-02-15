@@ -1,0 +1,51 @@
+{% extends "auctions/layout.html" %} {%block title%}Home{%endblock%}
+<div></div>
+{%block body%}{% if messages %} {%for message in messages%}
+<div class="alert {{message.tags}}">{{message}}</div>
+{%endfor%} {% endif %}
+<div class="jumbotron jumbotron-fluid" style="background-color: #e5c3c3">
+  <div class="container">
+    <h2 class="display-4">{{active}} Listings</h2>
+    <div class="row">
+      {%if auctions%} {% for auction in auctions %}
+      <div class="col-md-6 col-sm-12">
+        <a href="{% url 'auction' auction.id%}" class="text-decoration-none">
+          <div class="card mb-3" style="color: rgb(61, 61, 61)">
+            <div class="row no-gutters">
+              <div class="col-6">
+                <img
+                  class="card-img-top"
+                  src="{{auction.photo}}"
+                  alt="{{auction.item_name}}"
+                />
+              </div>
+              <div class="col-6">
+                <div class="card-body">
+                  <h5 class="card-title">{{auction.item_name}}</h5>
+
+                  <p class="card-text">Description: {{auction.description}}</p>
+                  <!-- loop through generated max-bids dictionary and match it with the right auction -->
+                  {%for key, value in prices.items%} {%if key == auction.id %}
+                  <p class="card-text">
+                    <small class="text-muted"
+                      >Current Bid Price: £{{value}}</small
+                    >
+                  </p>
+                  {%if auction.active %}
+                  <button class="btn btn-danger btn-lg" href="#" role="button">
+                    Bid
+                  </button>
+                  {%else%}
+                  <div>Auction Closed</div>
+                  {%endif%}
+                </div>
+              </div>
+            </div>
+          </div></a
+        >
+      </div>
+      {%endif%} {%endfor%} {%endfor %} {%endif%}
+    </div>
+  </div>
+</div>
+{% endblock %}

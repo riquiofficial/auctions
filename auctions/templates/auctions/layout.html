@@ -1,0 +1,118 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}Auctions{% endblock %}</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link href="{% static 'auctions/styles.css' %}" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Qwigley&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <h1 style="font-family: 'Qwigley', cursive; font-size: 80px">Auctions</h1>
+    <div class="position-absolute" style="top: 1rem; right: 1rem">
+      {% if user.is_authenticated %} Signed in as
+      <strong>{{ user.username }}</strong>.
+
+      <div></div>
+      {% with request.resolver_match.url_name as url_name %}
+      <div class="nav">
+        <li class="nav-item">
+          <a
+            class="nav-link {% if url_name == 'watchlist' %}active{% endif %}"
+            href="{% url 'watchlist' %}"
+            >My Watchlist</a
+          >
+        </li>
+      </div>
+
+      {% endwith %} {% else %}
+      <div>Not signed in.</div>
+      {% endif %}
+    </div>
+    {% with request.resolver_match.url_name as url_name %}
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a
+          class="nav-link {% if url_name == 'index' %}active{% endif %}"
+          href="{% url 'index' %}"
+          >Active Listings</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link {% if url_name == 'index_closed' %}active{% endif %}"
+          href="{% url 'index_closed' 'closed' %}"
+          >Closed Listings</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link {% if url_name == 'categories' %}active{% endif %}"
+          href="{% url 'categories' 'OT' %}"
+          >List By Category</a
+        >
+      </li>
+      {% if user.is_authenticated %}
+      <li class="nav-item">
+        <a
+          class="nav-link{% if url_name == 'new' %}active{% endif %}"
+          href="{% url 'new' %}"
+          >Create New Auction</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link {% if url_name == 'my_auctions' %}active{% endif %}"
+          href="{% url 'my_auctions' %}"
+          >My Auctions</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link {% if url_name == 'my_bids' %}active{% endif %}"
+          href="{% url 'my_bids' %}"
+          >My Bid History</a
+        >
+      </li>
+
+      <li class="nav-item">
+        <a
+          class="nav-link{% if url_name == 'logout' %}active{% endif %}"
+          href="{% url 'logout' %}"
+          >Log Out</a
+        >
+      </li>
+
+      {% else %}
+      <li class="nav-item">
+        <a
+          class="nav-link {% if url_name == 'login' %}active{% endif %}"
+          href="{% url 'login' %}"
+          >Log In</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link {% if url_name == 'register' %}active{% endif %}"
+          href="{% url 'register' %}"
+          >Register</a
+        >
+      </li>
+      {% endif %}
+    </ul>
+    {% endwith %}
+    <hr />
+    {% block body %} {% endblock %}
+  </body>
+</html>

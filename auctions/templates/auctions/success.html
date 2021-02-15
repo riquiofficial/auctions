@@ -1,0 +1,13 @@
+{% extends "auctions/layout.html" %} {%block title%}Success!{%endblock%}
+<div></div>
+{%block body %}
+
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h2 class="display-4">Auction {{list_name}} Successfully Created!</h2>
+    <a class="btn btn-primary btn-lg" href="{%url 'index'%}" role="button"
+      >Return to Listings</a
+    >
+  </div>
+</div>
+{% endblock %}

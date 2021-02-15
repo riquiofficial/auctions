@@ -1,0 +1,96 @@
+{% extends "auctions/layout.html" %} {%block title%}Auctions By
+Category{%endblock%}
+<div></div>
+{%block body%}
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link border" href="{% url 'categories' 'FA' %}"
+      >Fashion, Clothing and Accessories</a
+    >
+  </li>
+  <li class="nav-item border">
+    <a class="nav-link" href="{% url 'categories' 'TO' %}">Children's Toys</a>
+  </li>
+  <li class="nav-item border">
+    <a class="nav-link" href="{% url 'categories' 'EL' %}">Electronics</a>
+  </li>
+  <li class="nav-item border">
+    <a class="nav-link" href="{% url 'categories' 'HO' %}">Home</a>
+  </li>
+  <li class="nav-item border">
+    <a class="nav-link" href="{% url 'categories' 'BO' %}">Books</a>
+  </li>
+  <li class="nav-item border">
+    <a class="nav-link" href="{% url 'categories' 'EN' %}"
+      >Films, TV and Games</a
+    >
+  </li>
+  <li class="nav-item border">
+    <a class="nav-link" href="{% url 'categories' 'HE' %}"
+      >Health and Wellbeing</a
+    >
+  </li>
+  <li class="nav-item border">
+    <a class="nav-link" href="{% url 'categories' 'IN' %}">Industry</a>
+  </li>
+  <li class="nav-item border">
+    <a class="nav-link" href="{% url 'categories' 'AU' %}">Automotive</a>
+  </li>
+  <li class="nav-item border">
+    <a class="nav-link" href="{% url 'categories' 'FO' %}">Food and Drink</a>
+  </li>
+  <li class="nav-item border">
+    <a class="nav-link" href="{% url 'categories' 'OT' %}">Other</a>
+  </li>
+</ul>
+
+<div class="jumbotron jumbotron-fluid" style="background-color: #e5c3c3">
+  <div class="container">
+    <h2 class="display-4">Active Listings</h2>
+    <div class="row">
+      {%if category%} {% for auction in category %} {%if auction.active %}
+      <div class="col-md-6 col-sm-12">
+        <a href="{% url 'auction' auction.id%}" class="text-decoration-none">
+          <div class="card mb-3" style="color: rgb(61, 61, 61)">
+            <div class="row no-gutters">
+              <div class="col-6">
+                <img
+                  class="card-img-top"
+                  src="{{auction.photo}}"
+                  alt="{{auction.item_name}}"
+                />
+              </div>
+              <div class="col-6">
+                <div class="card-body">
+                  <h5 class="card-title">{{auction.item_name}}</h5>
+
+                  <p class="card-text">Description: {{auction.description}}</p>
+                  <!-- loop through generated max-bids dictionary and match it with the right auction -->
+                  {% if prices %} {% for key, value in prices.items %}
+
+                  <!--match auction id-->
+                  {% if key == auction.id %}
+                  <p class="card-text">
+                    <small class="text-muted"
+                      >Current Bid Price: £{{value}}</small
+                    >
+                  </p>
+                  <button class="btn btn-danger btn-lg" href="#" role="button">
+                    Bid
+                  </button>
+                  {%endif%} {%endfor%} {%endif%}
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+      {%endif%}{%endfor %}{%else%}
+      <div class="ml-3">
+        No Auctions Found, Please Select Another Category...
+      </div>
+      {%endif%}
+    </div>
+  </div>
+</div>
+{% endblock %}

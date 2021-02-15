@@ -1,0 +1,31 @@
+{% extends "auctions/layout.html" %} {%block title%}Watchlist{%endblock%}
+<div></div>
+{%block body%}{% if messages %} {%for message in messages%}
+<div class="alert {{message.tags}}">{{message}}</div>
+{%endfor%} {% endif %}
+<div class="jumbotron jumbotron-fluid" style="background-color: #e5c3c3">
+  <div class="container">
+    <h2 class="display-4">My Auctions</h2>
+    <div class="row">
+      <ul class="list-group">
+        {%if user_auctions %} {% for auction in user_auctions %}
+
+        <li
+          class="list-group-item {% if auction.active == False %} list-group-item-dark {%endif%}"
+        >
+          Your auction:
+          <a href="{% url 'auction' auction.id %}">{{auction.item_name}}</a>.
+          <div>
+            Auction is now {%if auction.active == False%} closed. {%else%}
+            active. {%endif%}
+          </div>
+        </li>
+
+        {%endfor %} {%else%}
+        <h4 class="ml-4">No Auctions...</h4>
+        {%endif%}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

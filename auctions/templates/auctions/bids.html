@@ -1,0 +1,29 @@
+{% extends "auctions/layout.html" %} {%block title%}Watchlist{%endblock%}
+<div></div>
+{%block body%}{% if messages %} {%for message in messages%}
+<div class="alert {{message.tags}}">{{message}}</div>
+{%endfor%} {% endif %}
+<div class="jumbotron jumbotron-fluid" style="background-color: #e5c3c3">
+  <div class="container">
+    <h2 class="display-4">My Bids</h2>
+    <div class="row">
+      <ul class="list-group">
+        {%if user_bids %} {% for bid in user_bids %}
+
+        <li
+          class="list-group-item {% if bid.auction.active == False %} list-group-item-dark {%endif%}"
+        >
+          You bid {{bid.bid_price}} on
+          <a href="{% url 'auction' bid.auction.id %}">{{bid.auction}}</a>.
+          <div></div>
+          {%if bid.auction.active == False%}Auction is now closed.{%endif%}
+        </li>
+
+        {%endfor %} {%else%}
+        <h4 class="ml-4">No bids...</h4>
+        {%endif%}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}
